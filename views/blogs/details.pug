@@ -1,0 +1,39 @@
+//- include ./base.pug
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+        link(rel="stylesheet", href="/style.css")
+        title= title
+    body
+        .container
+            h1.h1 Create Blogs
+
+            nav
+                ul
+                    li
+                        a(href="/") blogs
+                    li
+                        a(href="/about") about
+                    li
+                        a(href="/blogs/create") New blog
+            
+            div.container
+                h2= blog.title
+                p= blog.body
+                a(data-doc='' + blog._id class='delete link') delete
+    
+
+        script.
+            const trashcan = document.querySelector('a.delete')
+            trashcan.addEventListener('click', function() {
+                const endpoint = `/blogs/${trashcan.dataset.doc}`
+                fetch(endpoint, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => window.location.href = data.redirect)
+                .catch(err => console.log(err))
+            })
